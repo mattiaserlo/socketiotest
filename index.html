@@ -4,7 +4,7 @@
 	<title>SocketIO test</title>
 </head>
 <body>
-	<script src="http://106.187.52.148:8083/socket.io/socket.io.js"></script>
+	<script src="http://<YOUR_SERVERS_IP_NUMBER>:<YOUR_SERVERAPPS_PORTNUMBER>/socket.io/socket.io.js"></script>
 	<h1>SocketIO test</h1>
 	Message to send to server: <input type="text" id="toServerTextBox" onchange="toServerTextChanged()">
 	<br>
@@ -30,7 +30,7 @@
 			}
 		}
 
-		socket = io.connect('http://106.187.52.148:8083');
+		socket = io.connect('http://<YOUR_SERVERS_IP_NUMBER>:<YOUR_SERVERAPPS_PORTNUMBER>');
 
 		if (socket != null) {
 			socket.on('messageFromServer', function (data) {
