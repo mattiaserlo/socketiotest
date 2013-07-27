@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SocketIO test</title>
+</head>
+<body>
+	<script src="http://106.187.52.148:8083/socket.io/socket.io.js"></script>
+	<h1>SocketIO test</h1>
+	Message to send to server: <input type="text" id="toServerTextBox" onchange="toServerTextChanged()">
+	<br>
+	Message to broadcast to clients: <input type="text" id="broadcastTextBox" onchange="broadcastTextChanged()">
+	<br>
+	<label id="textLabel"></label>
+	<br>
+	<script>
+		
+		var socket = null;
+		
+		function toServerTextChanged() {
+			var textBox = document.getElementById("toServerTextBox");
+			if (socket) {
+				socket.emit('messageToServer', { text: textBox.value });
+			}
+		}
+		
+		function broadcastTextChanged() {
+			var textBox = document.getElementById("broadcastTextBox");
+			if (socket) {
+				socket.emit('broadcast', { text: textBox.value });
+			}
+		}
+
+		socket = io.connect('http://106.187.52.148:8083');
+
+		if (socket != null) {
+			socket.on('messageFromServer', function (data) {
+				console.log("Got messageFromServer");
+				document.getElementById('textLabel').innerHTML = "Got message from server: " + data.text;
+			});
+
+			socket.on('broadcast', function (data) {
+				console.log("Got broadcast message");
+				document.getElementById('textLabel').innerHTML = "Got broadcast message: " + data.text;
+			});
+
+
+			console.log("Now send a message to the server");
+			
+			socket.emit('messageToServer', { type: 'someType' ,
+											 moreData: 'someOtherData' });
+		}
+	</script> 
+</body>
+</html>
